@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Lista de tareas con prioridades que funciona sin conexión.">
+  <meta name="theme-color" content="#4f46e5">
+  <title>Mis Tareas</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Mis Tareas">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-row">
+      <img src="icons/icon-192.png" alt="" class="logo" width="36" height="36">
+      <div>
+        <h1>Mis Tareas</h1>
+        <p class="subtitle" id="resumen">0 pendientes</p>
+      </div>
+    </div>
+    <button id="btn-instalar" class="btn-instalar" hidden>Instalar app</button>
+  </header>
+
+  <main>
+    <!-- PANTALLA 1: Pendientes -->
+    <section id="pendientes" class="pantalla activa" aria-labelledby="t-pendientes">
+      <h2 id="t-pendientes">Pendientes</h2>
+
+      <div class="filtros" role="group" aria-label="Filtrar por prioridad">
+        <button class="chip activo" data-filtro="todas">Todas</button>
+        <button class="chip" data-filtro="alta">Alta</button>
+        <button class="chip" data-filtro="media">Media</button>
+        <button class="chip" data-filtro="baja">Baja</button>
+      </div>
+
+      <ul id="lista-pendientes" class="lista"></ul>
+      <p id="vacio-pendientes" class="vacio">No tienes tareas pendientes. Agrega una en la pestaña «Agregar».</p>
+    </section>
+
+    <!-- PANTALLA 2: Agregar -->
+    <section id="agregar" class="pantalla" aria-labelledby="t-agregar">
+      <h2 id="t-agregar">Nueva tarea</h2>
+
+      <form id="form-tarea" class="formulario" novalidate>
+        <label for="titulo">Título</label>
+        <input type="text" id="titulo" name="titulo" maxlength="80" placeholder="Ej. Entregar proyecto PWA" required>
+        <p class="error" id="error-titulo" hidden>Escribe un título para la tarea.</p>
+
+        <label for="descripcion">Descripción <span class="opcional">(opcional)</span></label>
+        <textarea id="descripcion" name="descripcion" rows="3" maxlength="200" placeholder="Detalles de la tarea"></textarea>
+
+        <fieldset>
+          <legend>Prioridad</legend>
+          <div class="prioridades">
+            <label class="opcion-prioridad alta">
+              <input type="radio" name="prioridad" value="alta"> Alta
+            </label>
+            <label class="opcion-prioridad media">
+              <input type="radio" name="prioridad" value="media" checked> Media
+            </label>
+            <label class="opcion-prioridad baja">
+              <input type="radio" name="prioridad" value="baja"> Baja
+            </label>
+          </div>
+        </fieldset>
+
+        <label for="fecha">Fecha límite <span class="opcional">(opcional)</span></label>
+        <input type="date" id="fecha" name="fecha">
+
+        <button type="submit" class="btn-primario">Guardar tarea</button>
+      </form>
+    </section>
+
+    <!-- PANTALLA 3: Completadas -->
+    <section id="completadas" class="pantalla" aria-labelledby="t-completadas">
+      <div class="titulo-con-accion">
+        <h2 id="t-completadas">Completadas</h2>
+        <button id="btn-limpiar" class="btn-texto">Borrar todas</button>
+      </div>
+      <ul id="lista-completadas" class="lista"></ul>
+      <p id="vacio-completadas" class="vacio">Aún no completas ninguna tarea.</p>
+    </section>
+  </main>
+
+  <!-- Navegación inferior -->
+  <nav class="nav-inferior" aria-label="Secciones">
+    <a href="#pendientes" class="nav-item activo" data-pantalla="pendientes">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+      <span>Pendientes</span>
+    </a>
+    <a href="#agregar" class="nav-item" data-pantalla="agregar">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+      <span>Agregar</span>
+    </a>
+    <a href="#completadas" class="nav-item" data-pantalla="completadas">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg>
+      <span>Completadas</span>
+    </a>
+  </nav>
+
+  <div id="aviso" class="aviso" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
